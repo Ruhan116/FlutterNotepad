@@ -19,16 +19,30 @@ class TopNavbar extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Get current theme to make navbar theme-aware
+    // Theme.of(context) gives access to current theme colors
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return AppBar(
-      backgroundColor: Colors.white,
+      // Use theme colors instead of hardcoded white
+      // surfaceContainer is perfect for AppBar in Material 3
+      // Automatically adapts to light/dark theme
+      backgroundColor: colorScheme.surfaceContainer,
+
+      // Foreground color for icons and text
+      // onSurface ensures good contrast
+      foregroundColor: colorScheme.onSurface,
+
       elevation: 4,
-      shadowColor: const Color.fromRGBO(0, 0, 0, 0.25),
+
+      // Shadow color also adapts to theme
+      shadowColor: colorScheme.shadow.withValues(alpha: 0.25),
 
       // Leading: back button if needed
       leading: showBackButton
           ? IconButton(
               icon: const Icon(Icons.arrow_back),
-              // Use custom action if provided, otherwise use pop
               onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
             )
           : null,
